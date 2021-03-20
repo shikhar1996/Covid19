@@ -19,7 +19,7 @@ type CovidDatabase struct {
 }
 
 const (
-	CONNECTIONSTRING = "mongodb+srv://shikhar:shikhar%40123@cluster0.mya9h.mongodb.net/covidDatabase?retryWrites=true&w=majority"
+	CONNECTIONSTRING = "mongodb+srv://shikhar:shikhar%4012@cluster0.mya9h.mongodb.net/covidDatabase?retryWrites=true&w=majority"
 	DB               = "covidDatabase"
 	ISSUES           = "India"
 )
