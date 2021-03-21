@@ -108,12 +108,13 @@ func HealthCheck(c echo.Context) error {
 
 // @host localhost:1323
 // @BasePath /
-// @schemes http
+// @schemes https
 func Redirect() {
 
 	// Echo instance
 	e := echo.New()
 
+	// e.Use(mw.Logger())
 	// Check if server is running or not
 	e.GET("/", HealthCheck)
 
