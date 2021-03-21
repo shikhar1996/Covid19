@@ -5,6 +5,7 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.uber.org/zap"
 )
 
 type Response struct {
@@ -25,7 +26,7 @@ func GetCount(state string) (Response, error) {
 	}
 	conn, err := ConnectRedis()
 	if err != nil {
-		// zap.String("Error: Redis", err.Error())
+		zap.String("Error: Redis", err.Error())
 	}
 	count1, err := redis.Int64(conn.Do("HGET", state, "count"))
 	if err == nil {
@@ -37,7 +38,7 @@ func GetCount(state string) (Response, error) {
 	}
 	client, err := InitiateMongoClient()
 	if err != nil {
-		// zap.String("Error: Database Connection", err.Error())
+		zap.String("Error: Database Connection", err.Error())
 		return queryResponse, err
 	}
 
@@ -49,7 +50,7 @@ func GetCount(state string) (Response, error) {
 	var result bson.M
 
 	if err = collection.FindOne(context.TODO(), bson.M{"_id": state}).Decode(&result); err != nil {
-		// zap.String("Error: Data not Found", err.Error())
+		zap.String("Error: Data not Found", err.Error())
 		return queryResponse, err
 	}
 
@@ -64,13 +65,13 @@ func GetCount(state string) (Response, error) {
 	// Add key(state) and values(count, lastupdated) to Redis
 	_, err = conn.Do("HMSET", state, "count", count, "lastUpdated", lastUpdated)
 	if err != nil {
-		// zap.String("Error: Redis", err.Error())
+		zap.String("Error: Redis", err.Error())
 	}
 
 	// Add time to live (30 minutes = 1800 seconds)
 	_, err = conn.Do("EXPIRE", state, 1800)
 	if err != nil {
-		// zap.String("Error: Redis", err.Error())
+		zap.String("Error: Redis", err.Error())
 	}
 
 	return queryResponse, nil

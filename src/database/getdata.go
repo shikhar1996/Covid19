@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 const API = "https://api.rootnet.in/covid19-in/stats/latest"
@@ -24,7 +26,7 @@ func Updatedata(data []CovidDatabase) error {
 	// Get MongoDB connection using connectionhelper.
 	client, err := InitiateMongoClient()
 	if err != nil {
-		// zap.String("Error: Database Connection", err.Error())
+		zap.String("Error: Database Connection", err.Error())
 	}
 
 	// Create a handle to the respective collection in the database.
@@ -36,11 +38,11 @@ func Updatedata(data []CovidDatabase) error {
 	// time. If we want to make it failsafe we can add replica of the same collection which will
 	// be updated at different time.
 	if err = collection.Drop(context.TODO()); err != nil {
-		// zap.String("Error: Table Drop", err.Error())
+		zap.String("Error: Table Drop", err.Error())
 	}
 	_, err = collection.InsertMany(context.TODO(), insertableList)
 	if err != nil {
-		// zap.String("Error: MongoDB", err.Error())
+		zap.String("Error: MongoDB", err.Error())
 		return err
 	}
 	// Return success without any error.
@@ -51,12 +53,12 @@ func Updatedata(data []CovidDatabase) error {
 func Getdata() []CovidDatabase {
 	resp, err := http.Get(API)
 	if err != nil {
-		// zap.String("Error: Getting API data", err.Error())
+		zap.String("Error: Getting API data", err.Error())
 	}
 	// We Read the response body on the line below.
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		// zap.String("Error: Reading API data", err.Error())
+		zap.String("Error: Reading API data", err.Error())
 	}
 	var result map[string]interface{}
 	json.Unmarshal([]byte(body), &result)

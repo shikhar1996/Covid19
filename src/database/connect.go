@@ -5,6 +5,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.uber.org/zap"
 )
 
 type CovidDatabase struct {
@@ -32,7 +33,7 @@ func InitiateMongoClient() (*mongo.Client, error) {
 	opts.ApplyURI(uri)
 	opts.SetMaxPoolSize(0)
 	if client, err = mongo.Connect(context.Background(), opts); err != nil {
-		// zap.String("Error: Database Connection", err.Error())
+		zap.String("Error: Database Connection", err.Error())
 	}
 	return client, err
 }

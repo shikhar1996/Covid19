@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/shikhar1996/Covid19/src/database"
 	"github.com/shikhar1996/Covid19/src/geoencoding"
+	"go.uber.org/zap"
 
 	_ "github.com/shikhar1996/Covid19/docs"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -42,7 +43,7 @@ func getCovidCount(c echo.Context) error {
 	state, err := geoencoding.GetState(coordinates)
 
 	if err != nil {
-		// zap.String("Error : Invalid Input", err.Error())
+		zap.String("Error : Invalid Input", err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	response, err := database.GetCount(state)
@@ -68,7 +69,7 @@ func updateDatabase(c echo.Context) error {
 	data := database.Getdata()
 	err := database.Updatedata(data)
 	if err != nil {
-		// zap.String("Error: Database Updation", err.Error())
+		zap.String("Error: Database Updation", err.Error())
 		c.String(http.StatusInternalServerError, "Database not Updated")
 	}
 
