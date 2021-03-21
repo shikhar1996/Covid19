@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
+	mw "github.com/labstack/echo/v4/middleware"
 	"github.com/shikhar1996/Covid19/src/database"
 	"github.com/shikhar1996/Covid19/src/geoencoding"
 	"go.uber.org/zap"
@@ -94,6 +95,12 @@ func HealthCheck(c echo.Context) error {
 	})
 }
 
+func setupCorsResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+}
+
 // @title Swagger API for Covid India Data
 // @version 1.0
 // @description This is a server.
@@ -114,6 +121,11 @@ func Redirect() {
 	// Echo instance
 	e := echo.New()
 
+	e.Use(mw.CORSWithConfig(mw.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}))
 	// e.Use(mw.Logger())
 	// Check if server is running or not
 	e.GET("/", HealthCheck)
