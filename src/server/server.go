@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shikhar1996/Covid19/src/database"
@@ -123,7 +124,9 @@ func Redirect() {
 	e.POST("/total_count", getCovidCount)
 	e.GET("/update_data", updateDatabase)
 
-	e.Logger.Fatal(e.Start(":0"))
+	port := os.Getenv("PORT")
+
+	e.Logger.Fatal(e.Start(":" + port))
 	fmt.Println("Port is:", e.Listener.Addr().(*net.TCPAddr).Port)
 
 }
