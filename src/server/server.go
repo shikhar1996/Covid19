@@ -1,6 +1,8 @@
 package server
 
 import (
+	"fmt"
+	"net"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -121,6 +123,7 @@ func Redirect() {
 	e.POST("/total_count", getCovidCount)
 	e.GET("/update_data", updateDatabase)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":0"))
+	fmt.Println("Port is:", e.Listener.Addr().(*net.TCPAddr).Port)
 
 }
