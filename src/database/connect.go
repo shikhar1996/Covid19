@@ -18,8 +18,9 @@ type CovidDatabase struct {
 	Time       string `json:"time"`
 }
 
+// Add you password and database name
 const (
-	CONNECTIONSTRING = "mongodb+srv://shikhar:helloshikhar@cluster0.mya9h.mongodb.net/covidDatabase?retryWrites=true&w=majority"
+	CONNECTIONSTRING = "mongodb+srv://shikhar:<password>@cluster0.mya9h.mongodb.net/covidDatabase?retryWrites=true&w=majority"
 	DB               = "covidDatabase"
 	TABLE            = "India"
 )
