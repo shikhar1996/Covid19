@@ -4,10 +4,10 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"go.uber.org/zap"
 )
-
+// Add you endpoint and pass for Redis Cloud
 const (
-	ENDPOINT = "redis-15226.c212.ap-south-1-1.ec2.cloud.redislabs.com:15226"
-	PASSWORD = "M9XBlksVe8KW7bGYXGS5DwGDPQozPQno"
+	ENDPOINT = "endpoint"
+	PASSWORD = "password"
 )
 
 func ConnectRedis() (redis.Conn, error) {
