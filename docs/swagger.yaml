@@ -1,0 +1,95 @@
+basePath: /
+definitions:
+  database.Response:
+    properties:
+      Count:
+        example: 274405
+        type: integer
+      LastUpdated:
+        example: "2021-03-21T12:40:03.823+05:30"
+        type: string
+      State:
+        example: Madhya Pradesh
+        type: string
+    type: object
+host: localhost:1323
+info:
+  contact:
+    email: shikhar.agrawal789@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger API for Covid India Data
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - root
+  /total_count:
+    post:
+      consumes:
+      - application/json
+      description: Take the latitude and longitude as input and return total number
+        of coved cases in that state along with time stamp
+      parameters:
+      - description: Latitude
+        in: query
+        name: latitude
+        required: true
+        type: string
+      - description: Longitude
+        in: query
+        name: longitude
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get total number of covid cases
+      tags:
+      - covid
+  /update_data:
+    get:
+      consumes:
+      - '*/*'
+      description: This API calls "https://api.rootnet.in/covid19-in/stats/latest"
+        API and update the Covid Data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update the MongoDB Database
+      tags:
+      - covid
+schemes:
+- http
+swagger: "2.0"

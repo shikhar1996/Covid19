@@ -1,0 +1,137 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a server.",
+        "title": "Swagger API for Covid India Data",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "shikhar.agrawal789@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:1323",
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/total_count": {
+            "post": {
+                "description": "Take the latitude and longitude as input and return total number of coved cases in that state along with time stamp",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "covid"
+                ],
+                "summary": "Get total number of covid cases",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Latitude",
+                        "name": "latitude",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Longitude",
+                        "name": "longitude",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/database.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/update_data": {
+            "get": {
+                "description": "This API calls \"https://api.rootnet.in/covid19-in/stats/latest\" API and update the Covid Data",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "covid"
+                ],
+                "summary": "Update the MongoDB Database",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "database.Response": {
+            "type": "object",
+            "properties": {
+                "Count": {
+                    "type": "integer",
+                    "example": 274405
+                },
+                "LastUpdated": {
+                    "type": "string",
+                    "example": "2021-03-21T12:40:03.823+05:30"
+                },
+                "State": {
+                    "type": "string",
+                    "example": "Madhya Pradesh"
+                }
+            }
+        }
+    }
+}

@@ -4,22 +4,122 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/shikhar1996/Covid19/src/database"
+	"github.com/shikhar1996/Covid19/src/geoencoding"
+
+	_ "github.com/shikhar1996/Covid19/docs"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// e.GET("/users/:id", getUser)
-func getUser(c echo.Context) error {
-	// User ID from path `users/:id`
-	id := c.Param("id")
-	return c.String(http.StatusOK, id)
+var Message string
+
+// echo http://localhost:1323/Cases?latitude=21.903132&longitude=77.912053
+// default value Betul Coordinates :)
+// GetDataByState godoc
+// @Summary Get total number of covid cases
+// @Description Take the latitude and longitude as input and return total number of coved cases in that state along with time stamp
+// @Tags covid
+// @Accept  json
+// @Produce  json
+// @Param latitude query string true "Latitude"
+// @Param longitude query string true "Longitude"
+// @Success 200 {object} database.Response
+// @Failure 400 {string} Message
+// @Router /total_count [post]
+func getCovidCount(c echo.Context) error {
+
+	latitude := c.QueryParam("latitude")
+	longitude := c.QueryParam("longitude")
+	var coordinates geoencoding.Coordinates
+	coordinates.Lat = latitude
+	coordinates.Long = longitude
+
+	// zap.String("Input Coordinates", "("+latitude+", "+longitude+")")
+	if latitude == "" || longitude == "" {
+		Message = "Invalid Coordinates"
+		return echo.NewHTTPError(http.StatusBadRequest, Message)
+	}
+	state, err := geoencoding.GetState(coordinates)
+
+	if err != nil {
+		// zap.String("Error : Invalid Input", err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	response, err := database.GetCount(state)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, response)
 }
-func redirect() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
+
+// e.GET("/Data", updateDatabase)
+// Update Database godoc
+// @Summary Update the MongoDB Database
+// @Description This API calls "https://api.rootnet.in/covid19-in/stats/latest" API and update the Covid Data
+// @Tags covid
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /update_data [get]
+func updateDatabase(c echo.Context) error {
+
+	data := database.Getdata()
+	err := database.Updatedata(data)
+	if err != nil {
+		// zap.String("Error: Database Updation", err.Error())
+		c.String(http.StatusInternalServerError, "Database not Updated")
+	}
+
+	return c.String(http.StatusOK, "Database Updated")
+
+}
+
+// HealthCheck godoc
+// @Summary Show the status of server.
+// @Description get the status of server.
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router / [get]
+func HealthCheck(c echo.Context) error {
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": "Server is up and running",
 	})
-	//e.POST("/users", saveUser)
-	e.GET("/users/:id", getUser)
-	//e.PUT("/users/:id", updateUser)
-	//e.DELETE("/users/:id", deleteUser)
+}
+
+// @title Swagger API for Covid India Data
+// @version 1.0
+// @description This is a server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email shikhar.agrawal789@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:1323
+// @BasePath /
+// @schemes http
+func Redirect() {
+
+	// Echo instance
+	e := echo.New()
+
+	// Check if server is running or not
+	e.GET("/", HealthCheck)
+
+	// Swagger API
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	// Normal API
+	e.POST("/total_count", getCovidCount)
+	e.GET("/update_data", updateDatabase)
+
 	e.Logger.Fatal(e.Start(":1323"))
+
 }

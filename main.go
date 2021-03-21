@@ -6,6 +6,9 @@ import (
 
 func main() {
 
-	data := server.Getdata()
-	server.Updatedata(data)
+	// Start logging
+	// logger.Init()
+	// Start the server
+	server.Redirect()
+
 }
