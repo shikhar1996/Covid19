@@ -2,7 +2,14 @@
 Get COVID-19 cases information in Indian Geography
 
 
-## Install go(lang)
+## Hosted app on Heroku
+```
+https://sleepy-wave-66147.herokuapp.com/swagger/index.html
+```
+
+## Follow the instructions below to get a local app running
+
+## Install golang
 
 with [homebrew](http://mxcl.github.io/homebrew/):
 
