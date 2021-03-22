@@ -1,6 +1,5 @@
 {
     "schemes": [
-        "http",
         "https"
     ],
     "swagger": "2.0",
@@ -19,6 +18,7 @@
         },
         "version": "1.0"
     },
+    "host": "sleepy-wave-66147.herokuapp.com",
     "basePath": "/",
     "paths": {
         "/": {

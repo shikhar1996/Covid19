@@ -9,10 +9,10 @@ func main() {
 
 	// Start logging
 	// logger.Init()
-	// Start the server
-	go server.Redirect()
 
 	// Start scheduler
-	scheduler.ScheduleUpdateDatabase()
+	go scheduler.ScheduleUpdateDatabase()
+	// Start the server
+	server.Redirect()
 
 }

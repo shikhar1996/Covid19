@@ -9,7 +9,7 @@ import (
 
 func ScheduleUpdateDatabase() {
 	// Updating the database every hour
-	for t := range time.NewTicker(3600 * time.Second).C {
+	for t := range time.NewTicker(10 * time.Second).C {
 		zap.String("Scheduler: ", t.String())
 		// fmt.Println(t)
 		data, err := database.Getdata()
