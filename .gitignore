@@ -1,5 +1,9 @@
 # MacOS file
 *.DS_Store
+
+# VScode
+*.vscode
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
