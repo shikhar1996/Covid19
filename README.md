@@ -59,8 +59,8 @@ go run main.go
 
 Access the API and Swagger UI through the connection on the connected port.
 ```
-localhost:port/
-localhost:port/swagger/index.html
+http://localhost:{port}/
+http://localhost:{port}/swagger/index.html
 ```
 
 ## Limitations
