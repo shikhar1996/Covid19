@@ -70,8 +70,12 @@ func getCovidCount(c echo.Context) error {
 // @Router /update_data [get]
 func updateDatabase(c echo.Context) error {
 
-	data := database.Getdata()
-	err := database.Updatedata(data)
+	data, err := database.Getdata()
+	if err != nil {
+		zap.String("Error: Database Updation", err.Error())
+		c.String(http.StatusInternalServerError, "Database not Updated")
+	}
+	err = database.Updatedata(data)
 	if err != nil {
 		zap.String("Error: Database Updation", err.Error())
 		c.String(http.StatusInternalServerError, "Database not Updated")

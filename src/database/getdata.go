@@ -50,15 +50,20 @@ func Updatedata(data []CovidDatabase) error {
 }
 
 // Function to get covid data from public API
-func Getdata() []CovidDatabase {
+func Getdata() ([]CovidDatabase, error) {
+
+	var covid []CovidDatabase
+
 	resp, err := http.Get(API)
 	if err != nil {
 		zap.String("Error: Getting API data", err.Error())
+		return covid, err
 	}
 	// We Read the response body on the line below.
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		zap.String("Error: Reading API data", err.Error())
+		return covid, err
 	}
 	var result map[string]interface{}
 	json.Unmarshal([]byte(body), &result)
@@ -66,11 +71,10 @@ func Getdata() []CovidDatabase {
 	// Store all relevant objects in data
 	data := result["data"].(map[string]interface{})["regional"].([]interface{})
 
-	var covid []CovidDatabase
 	s, _ := json.Marshal(data)
 	json.Unmarshal([]byte(s), &covid)
 
 	// fmt.Printf("Objects : %+v", covid)
 
-	return covid
+	return covid, nil
 }
