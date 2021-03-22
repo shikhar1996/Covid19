@@ -18,10 +18,11 @@ type CovidDatabase struct {
 	Time       string `json:"time"`
 }
 
+// Enter user, password, database and collection details here
 const (
-	CONNECTIONSTRING = "mongodb+srv://shikhar:helloshikhar@cluster0.mya9h.mongodb.net/covidDatabase?retryWrites=true&w=majority"
-	DB               = "covidDatabase"
-	TABLE            = "India"
+	CONNECTIONSTRING = "mongodb+srv://<user>:<password>@cluster0.mya9h.mongodb.net/<database.?retryWrites=true&w=majority"
+	DB               = "<database>"
+	TABLE            = "<collection>"
 )
 
 // Create connection
