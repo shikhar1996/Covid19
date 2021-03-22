@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	mw "github.com/labstack/echo/v4/middleware"
@@ -30,6 +29,7 @@ var Message string
 // @Param longitude query string true "Longitude"
 // @Success 200 {object} database.Response
 // @Failure 400 {string} Message
+// @Failure 503 {string} Message
 // @Router /total_count [post]
 func getCovidCount(c echo.Context) error {
 
@@ -45,7 +45,6 @@ func getCovidCount(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, Message)
 	}
 	state, err := geoencoding.GetState(coordinates)
-
 	if err != nil {
 		zap.String("Error : Invalid Input", err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -111,7 +110,6 @@ func HealthCheck(c echo.Context) error {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host sleepy-wave-66147.herokuapp.com
 // @BasePath /
 // @schemes http https
 func Redirect() {
@@ -139,9 +137,9 @@ func Redirect() {
 	e.POST("/total_count", getCovidCount)
 	e.GET("/update_data", updateDatabase)
 
-	port := os.Getenv("PORT")
+	// port := os.Getenv("PORT")
 
-	e.Logger.Fatal(e.Start(":" + port))
+	e.Logger.Fatal(e.Start(":" + "1234"))
 	fmt.Println("Port is:", e.Listener.Addr().(*net.TCPAddr).Port)
 
 }
