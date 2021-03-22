@@ -20,7 +20,7 @@ type Coordinates struct {
 // Get your API key and update is here
 const (
 	URL    = "http://api.positionstack.com"
-	APIKEY = "9dc26181b71942060fcf15948628ce3a"
+	APIKEY = "<apikey>"
 )
 
 // Get Indian state from the GPS coordinate
