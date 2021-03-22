@@ -70,6 +70,10 @@ paths:
           description: Bad Request
           schema:
             type: string
+        "503":
+          description: Service Unavailable
+          schema:
+            type: string
       summary: Get total number of covid cases
       tags:
       - covid
