@@ -12,7 +12,6 @@ definitions:
         example: Madhya Pradesh
         type: string
     type: object
-host: sleepy-wave-66147.herokuapp.com
 info:
   contact:
     email: shikhar.agrawal789@gmail.com
