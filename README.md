@@ -56,11 +56,17 @@ localhost:port/
 localhost:port/swagger/index.html
 ```
 
-## API Limit
+## Limitations
 
 * There is monthly limit of 25,000 requests for reverse encoding API.
+* Redis Cache 30MB
+* Heroku 550 free dyno hours each month. There the service might be idle after 30 minutes of inactivity. In this case the first request might be slow
 
+## Postman Collection
+
+* https://www.getpostman.com/collections/403a8f620e9d0473ee3e
 
 ## Issues
+
 * If the server is running on secured domain use HTTPS for sending request.
 * If the server is running on localhost HTTP can be used.
