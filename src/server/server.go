@@ -95,12 +95,6 @@ func HealthCheck(c echo.Context) error {
 	})
 }
 
-func setupCorsResponse(w *http.ResponseWriter, req *http.Request) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
-}
-
 // @title Swagger API for Covid India Data
 // @version 1.0
 // @description This is a server.
@@ -113,7 +107,7 @@ func setupCorsResponse(w *http.ResponseWriter, req *http.Request) {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:1323
+// @host sleepy-wave-66147.herokuapp.com
 // @BasePath /
 // @schemes https
 func Redirect() {
@@ -121,6 +115,7 @@ func Redirect() {
 	// Echo instance
 	e := echo.New()
 
+	// e.AutoTLSManager.Cache = autocert.DirCache(".cache")
 	e.Use(mw.CORSWithConfig(mw.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
