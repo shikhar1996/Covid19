@@ -15,10 +15,11 @@ func ScheduleUpdateDatabase() {
 		data, err := database.Getdata()
 		if err != nil {
 			zap.String("Error: Database Updation", err.Error())
-		}
-		err = database.Updatedata(data)
-		if err != nil {
-			zap.String("Error: Database Updation", err.Error())
+		} else {
+			err = database.Updatedata(data)
+			if err != nil {
+				zap.String("Error: Database Updation", err.Error())
+			}
 		}
 	}
 }

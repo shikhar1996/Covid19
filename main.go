@@ -15,4 +15,6 @@ func main() {
 	// Start the server
 	server.Redirect()
 
+	// Main routine does not exist before scheduler
+	select {}
 }
