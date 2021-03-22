@@ -3,9 +3,11 @@ package geoencoding
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"go.uber.org/zap"
 )
@@ -24,10 +26,24 @@ const (
 func GetState(coordinate Coordinates) (string, error) {
 	lat1 := coordinate.Lat
 	long1 := coordinate.Long
+	_, err := strconv.ParseFloat(lat1, 64)
+	if err != nil {
+		zap.String("Error Input", err.Error())
+		return "", err
+	}
+	_, err = strconv.ParseFloat(long1, 64)
+	if err != nil {
+		zap.String("Error Input", err.Error())
+		return "", err
+	}
 	coordinateParam := lat1 + "," + long1
 
-	baseURL, _ := url.Parse(URL)
+	baseURL, err := url.Parse(URL)
 
+	if err != nil {
+		zap.String("Error Parse", err.Error())
+		return "", err
+	}
 	baseURL.Path += "v1/reverse"
 
 	params := url.Values{}
@@ -45,13 +61,20 @@ func GetState(coordinate Coordinates) (string, error) {
 	res, err := http.DefaultClient.Do(req)
 
 	if err != nil {
+		fmt.Println(err.Error())
 		zap.String("Error Connection", err.Error())
 		return "", err
 	}
 
 	defer res.Body.Close()
 
-	body, _ := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		zap.String("Error Connection", err.Error())
+		return "", err
+	}
 	var result map[string]interface{}
 	json.Unmarshal([]byte(body), &result)
 

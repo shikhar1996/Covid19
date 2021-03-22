@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	mw "github.com/labstack/echo/v4/middleware"
@@ -110,6 +111,7 @@ func HealthCheck(c echo.Context) error {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
+// @host sleepy-wave-66147.herokuapp.com
 // @BasePath /
 // @schemes http https
 func Redirect() {
@@ -137,9 +139,9 @@ func Redirect() {
 	e.POST("/total_count", getCovidCount)
 	e.GET("/update_data", updateDatabase)
 
-	// port := os.Getenv("PORT")
+	port := os.Getenv("PORT")
 
-	e.Logger.Fatal(e.Start(":" + "1234"))
+	e.Logger.Fatal(e.Start(":" + port))
 	fmt.Println("Port is:", e.Listener.Addr().(*net.TCPAddr).Port)
 
 }
