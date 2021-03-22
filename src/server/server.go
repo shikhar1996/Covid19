@@ -111,9 +111,8 @@ func HealthCheck(c echo.Context) error {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host sleepy-wave-66147.herokuapp.com
 // @BasePath /
-// @schemes https
+// @schemes http https
 func Redirect() {
 
 	// Echo instance
