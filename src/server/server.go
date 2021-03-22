@@ -113,7 +113,7 @@ func HealthCheck(c echo.Context) error {
 
 // @host sleepy-wave-66147.herokuapp.com
 // @BasePath /
-// @schemes https
+// @schemes http https
 func Redirect() {
 
 	// Echo instance
@@ -127,7 +127,10 @@ func Redirect() {
 	}))
 	// e.Use(mw.Logger())
 	// Check if server is running or not
-	e.GET("/", HealthCheck)
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, Welcome to Covid India Data. To access APIs read docs!")
+	})
+	e.GET("/heath_check", HealthCheck)
 
 	// Swagger API
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
