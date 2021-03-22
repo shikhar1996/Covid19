@@ -16,7 +16,7 @@ with [apt](http://packages.qa.debian.org/a/apt.html)-get:
 sudo apt-get install golang
 ```
 
-# Project Setup
+## Project Setup
 
 Clone the repository
 
@@ -56,11 +56,11 @@ localhost:port/
 localhost:port/swagger/index.html
 ```
 
-# API Limit
+## API Limit
 
 * There is monthly limit of 25,000 requests for reverse encoding API.
 
 
-# Issues
+## Issues
 * If the server is running on secured domain use HTTPS for sending request.
 * If the server is running on localhost HTTP can be used.
