@@ -39,9 +39,9 @@ Enter the directory
 cd Covid19
 ```
 
-Clean up dependencies
+With Go Modules support easily clone repo outside GOPATH
 ```
-go mod tidy
+go install
 ```
 
 Update the database location and credentials in the following files
